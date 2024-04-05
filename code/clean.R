@@ -21,5 +21,23 @@ df <- as_tibble(readRDS("../data/sales.RDS"))
 
 # 3. Exploratory data analysis -------------------------------------------------
 
+soldMost <- names(which.max(table(df$artikelcode)))
 
+df <- df |> 
+  filter(artikelcode == soldMost
+         ) |> 
+  select(relatiecode:inflow)
 
+data <- df |> select(aantal, datum
+                     )|> 
+  mutate(aantal = aantal * -1)
+
+splits <- time_series_split(
+  data,
+  assess = "3 months",
+  cumulative = TRUE
+)
+
+splits |> 
+  tk_time_series_cv_plan() |> 
+  plot_time_series_cv_plan(datum, aantal)
