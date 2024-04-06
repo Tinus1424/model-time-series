@@ -28,9 +28,12 @@ df <- df |>
          ) |> 
   select(relatiecode:inflow)
 
-data <- df |> select(aantal, datum
-                     )|> 
-  mutate(aantal = aantal * -1)
+data <- df |> 
+  select(aantal, datum
+         )|> 
+  mutate(aantal = aantal * -1
+         )|>
+  summarise(aantal, .by = datum)
 
 splits <- time_series_split(
   data,
