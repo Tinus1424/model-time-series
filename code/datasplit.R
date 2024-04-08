@@ -13,3 +13,5 @@ library(tidymodels)
 library(timetk)
 
 df <- as_tibble(readRDS("../data/sales.RDS"))
+
+source("modelfit.R")

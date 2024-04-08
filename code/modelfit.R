@@ -82,7 +82,7 @@ calib_tbl <- model_tbl |>
   modeltime_calibrate(testing(splits))
 
 # Model Accuracy ----
-calib_tbl |> ?modeltime_accuracy() # Truly terrible scores
+calib_tbl |> modeltime_accuracy() # Truly terrible scores
 
 # Visualization ----
 calib_tbl |> 
