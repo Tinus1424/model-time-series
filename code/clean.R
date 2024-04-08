@@ -32,8 +32,11 @@ data <- df |>
   select(aantal, datum
          )|> 
   mutate(aantal = aantal * -1
-         )|>
-  summarise(aantal, .by = datum)
+         )|> 
+  group_by(datum
+         )|> 
+  summarise(aantal = sum (aantal)
+            )
 
 splits <- time_series_split(
   data,
@@ -44,3 +47,26 @@ splits <- time_series_split(
 splits |> 
   tk_time_series_cv_plan() |> 
   plot_time_series_cv_plan(datum, aantal)
+
+model_prophet <- 
+  prophet_reg(seasonality_yearly = TRUE
+              ) |> 
+  set_engine("prophet"
+             ) |> 
+  fit(aantal ~ datum, training(splits)
+  )
+
+model_glmnet <- linear_reg(penalty = 0.01) |> 
+  set_engine("glmnet") |> 
+  fit(
+    aantal ~ wday(datum, label = TRUE)
+    + month(datum, label = TRUE)
+    + as.numeric(datum),
+    training(splits)
+  )
+
+model_tbl <- modeltime_table(
+  model_prophet,
+  model_glmnet
+)
+
