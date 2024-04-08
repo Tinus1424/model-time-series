@@ -6,39 +6,17 @@
 # Description: Wholegame modeling time series data for practice
 ################################################################################
 
-# 1. Importing libraries ----
+# Importing libraries ----
 
-library(tidyverse) # Foundational packages, such as dplyr and ggplot
+source("dataprep.R")
+
 library(tidymodels) # Package for modeling data
 library(timetk)
 library(lubridate)
 library(modeltime)
+
 tidymodels_prefer() # Prefers tidymodel function names over conflicting names
-
-# 2. Importing the dataset ----
-setwd("~/1_r/modelingtimeseries/code")
-
-df <- as_tibble(readRDS("../data/sales.RDS"))
-
-# 3. Data preparation  ----
-
-soldMost <- names(which.max(table(df$artikelcode)))
-
-df <- df |> 
-  filter(artikelcode == soldMost
-         ) |> 
-  select(relatiecode:inflow)
-
-data <- df |> 
-  select(aantal, datum
-         )|> 
-  mutate(aantal = aantal * -1
-         )|> 
-  group_by(datum
-         )|> 
-  summarise(aantal = sum (aantal)
-            )
-
+# Splitting the data ----
 
 splits <- time_series_split(
   data,
