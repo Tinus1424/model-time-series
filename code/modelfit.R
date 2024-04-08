@@ -3,8 +3,7 @@
 # Author: Martijn van 't Zelfden
 # Project: Modeling time series data
 #
-# Description: First try at modeling time series data using parsnip for model
-# development and modeltime to work with timeseries data
+# Description: Wholegame modeling time series data for practice
 ################################################################################
 
 # 1. Importing libraries ----
